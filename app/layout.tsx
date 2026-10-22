@@ -1,35 +1,34 @@
 import type { Metadata } from "next";
-import { Inter, Outfit } from "next/font/google";
+import { Bricolage_Grotesque, IBM_Plex_Sans, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
-import ParticlesBackground from "@/components/ParticlesBackground";
-import Header from "@/components/Header";
+import { LangProvider } from "@/lib/i18n";
 
-const inter = Inter({ 
-  subsets: ["latin"],
-  variable: '--font-inter',
-});
+const display = Bricolage_Grotesque({ subsets: ["latin"], variable: "--font-display" });
+const body = IBM_Plex_Sans({ subsets: ["latin"], weight: ["400", "500"], variable: "--font-body" });
+const mono = JetBrains_Mono({ subsets: ["latin"], variable: "--font-mono" });
 
-const outfit = Outfit({ 
-  subsets: ["latin"],
-  variable: '--font-outfit',
-});
+const description =
+  "Andrea Cassini, full-stack developer from Bordighera, Italy. Web apps, AI tools and automation, with code and live demos.";
 
 export const metadata: Metadata = {
-  title: "Andrea Cassini - Full Stack Developer",
-  description: "Portfolio of Andrea Cassini - Full stack developer specialized in React, Node.js, and modern web technologies",
+  metadataBase: new URL("https://andreacassini.com"),
+  title: "Andrea Cassini | Full-Stack Developer",
+  description,
+  openGraph: {
+    title: "Andrea Cassini | Full-Stack Developer",
+    description,
+    url: "https://andreacassini.com",
+    siteName: "Andrea Cassini",
+    type: "website",
+  },
+  alternates: { canonical: "/" },
 };
 
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" className={`${inter.variable} ${outfit.variable}`}>
-      <body className="font-body bg-gradient-to-br from-[#667eea] to-[#764ba2] min-h-screen text-white antialiased">
-        <ParticlesBackground />
-        <Header />
-        <main>{children}</main>
+    <html lang="en" className={`${display.variable} ${body.variable} ${mono.variable}`}>
+      <body>
+        <LangProvider>{children}</LangProvider>
       </body>
     </html>
   );
