@@ -7,7 +7,7 @@ const display = Big_Shoulders({ subsets: ["latin"], weight: ["700", "800", "900"
 const body = Manrope({ subsets: ["latin"], variable: "--font-body" });
 
 const description =
-  "Andrea Cassini, full-stack developer from Bordighera, Italy. Web apps, AI tools and automation, with code and live demos.";
+  "Andrea Cassini, junior software developer in Turin, Italy. Computer Engineering graduate with full-stack skills, AI projects, code and live demos.";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://andreacassini.com"),

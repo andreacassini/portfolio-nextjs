@@ -5,16 +5,19 @@ import WaveField from './WaveField';
 import { useLang } from '@/lib/i18n';
 import { projects, type Lang, type Project } from '@/lib/projects';
 
-const EMAIL = process.env.NEXT_PUBLIC_CONTACT_EMAIL;
+const EMAIL = process.env.NEXT_PUBLIC_CONTACT_EMAIL || 'info@andreacassini.com';
+const LINKEDIN = 'https://www.linkedin.com/in/andrea-cassini-a316161ba';
+const CV = '/Andrea_Cassini_CV_en_2026.pdf';
 
 const t = {
   en: {
     nav: ['Projects', 'About', 'Contact'],
     hi: 'Hi, my name is',
-    roles: ['full-stack developer', 'builder of AI tools', 'Vue, React and Laravel', 'based in Bordighera, Italy'],
-    lead: 'I build web apps, AI-powered tools and automation. Below you can browse my projects, read the code on GitHub and open the live demos.',
+    roles: ['junior software developer', 'computer engineering graduate', 'Vue, Laravel and Python', 'based in Turin, Italy'],
+    lead: 'Computer Engineering graduate with full-stack training and nearly three years in automotive software validation. I build web apps and AI tools. Browse the projects, read the code and open the live demos.',
     seeWork: 'See projects',
     getInTouch: 'Get in touch',
+    cv: 'Download CV',
     projects: 'Projects',
     count: (n: number) => `${n} selected from GitHub`,
     all: 'All',
@@ -23,28 +26,30 @@ const t = {
     code: 'Code',
     priv: 'Private repository',
     about: 'About',
-    p1: 'I am a full-stack developer from Bordighera, on the Italian Riviera. I started with HTML and CSS, moved through JavaScript, Vue and Laravel, and now spend most of my time on Next.js, Python and LLM-based tools.',
-    p2: 'I like projects where a messy manual process becomes a tool someone actually uses. Recent work includes a multi-model iOS assistant, a trip decision engine and test-case generation for QA teams.',
+    p1: 'I am a Computer Engineering graduate based in Turin. I learned full-stack development with PHP, Laravel, JavaScript and Vue.js, then spent nearly three years in software validation at Reply, testing infotainment, connectivity and powertrain systems for automotive clients.',
+    p2: 'Testing taught me to find root causes and to write software that is easy to verify. Now I am moving into development, with a focus on backend and AI applications, and I build my own projects with the OpenAI and Anthropic APIs.',
     skills: [
-      ['Front end', ['TypeScript', 'React', 'Next.js', 'Vue', 'Tailwind', 'Bootstrap']],
-      ['Back end', ['Node.js', 'NestJS', 'Laravel', 'PHP', 'Python', 'PostgreSQL']],
-      ['AI and automation', ['LLM orchestration', 'LangGraph', 'OpenAI API', 'n8n', 'Temporal']],
-      ['Tools', ['Git', 'Docker', 'Swift', 'pytest']],
+      ['Front end', ['JavaScript', 'TypeScript', 'Vue.js', 'React', 'Next.js', 'HTML / CSS', 'Bootstrap', 'Tailwind']],
+      ['Back end', ['PHP', 'Laravel', 'Node.js', 'Python', 'MySQL', 'PostgreSQL', 'REST APIs']],
+      ['AI and automation', ['OpenAI API', 'Anthropic API', 'LangGraph', 'n8n', 'Playwright']],
+      ['Testing and tools', ['Test design', 'Defect analysis', 'pytest', 'Jira', 'Postman', 'Git', 'Docker']],
     ] as [string, string[]][],
     contact: "Let's build something.",
-    contactLead: 'Open to freelance work and full-time roles. The fastest way to reach me is below.',
+    contactLead: 'I am looking for a junior software developer role, with an interest in backend and AI applications. Write to me or find me on LinkedIn.',
     email: 'Send an email',
-    github: 'GitHub profile',
+    github: 'GitHub',
+    linkedin: 'LinkedIn',
     top: 'Back to top',
     built: 'Built with Next.js',
   },
   it: {
     nav: ['Progetti', 'Chi sono', 'Contatti'],
     hi: 'Ciao, mi chiamo',
-    roles: ['sviluppatore full-stack', 'creo strumenti con AI', 'Vue, React e Laravel', 'di Bordighera, Italia'],
-    lead: 'Sviluppo web app, strumenti basati su AI e automazioni. Qui sotto trovi i progetti, il codice su GitHub e le demo online.',
+    roles: ['junior software developer', 'laureato in Ing. Informatica', 'Vue, Laravel e Python', 'di base a Torino'],
+    lead: 'Laureato in Ingegneria Informatica con formazione full-stack e quasi tre anni di validazione software nel settore automotive. Sviluppo web app e strumenti AI. Trovi i progetti, il codice e le demo online.',
     seeWork: 'Vedi i progetti',
     getInTouch: 'Contattami',
+    cv: 'Scarica il CV',
     projects: 'Progetti',
     count: (n: number) => `${n} selezionati da GitHub`,
     all: 'Tutti',
@@ -53,18 +58,19 @@ const t = {
     code: 'Codice',
     priv: 'Repository privato',
     about: 'Chi sono',
-    p1: 'Sono uno sviluppatore full-stack di Bordighera, sulla Riviera ligure. Ho iniziato con HTML e CSS, sono passato per JavaScript, Vue e Laravel, e oggi lavoro soprattutto con Next.js, Python e strumenti basati su LLM.',
-    p2: 'Mi piacciono i progetti in cui un processo manuale e caotico diventa uno strumento che qualcuno usa davvero. Tra i lavori recenti: un assistente iOS multi-modello, un motore decisionale per viaggi e la generazione di test case per team QA.',
+    p1: 'Sono laureato in Ingegneria Informatica e vivo a Torino. Ho imparato lo sviluppo full-stack con PHP, Laravel, JavaScript e Vue.js, poi ho passato quasi tre anni in validazione software in Reply, testando sistemi di infotainment, connettività e powertrain per clienti automotive.',
+    p2: 'Il testing mi ha insegnato a cercare le cause radice e a scrivere software facile da verificare. Ora passo allo sviluppo, con interesse per backend e applicazioni AI, e costruisco progetti miei con le API di OpenAI e Anthropic.',
     skills: [
-      ['Front end', ['TypeScript', 'React', 'Next.js', 'Vue', 'Tailwind', 'Bootstrap']],
-      ['Back end', ['Node.js', 'NestJS', 'Laravel', 'PHP', 'Python', 'PostgreSQL']],
-      ['AI e automazione', ['Orchestrazione LLM', 'LangGraph', 'API OpenAI', 'n8n', 'Temporal']],
-      ['Strumenti', ['Git', 'Docker', 'Swift', 'pytest']],
+      ['Front end', ['JavaScript', 'TypeScript', 'Vue.js', 'React', 'Next.js', 'HTML / CSS', 'Bootstrap', 'Tailwind']],
+      ['Back end', ['PHP', 'Laravel', 'Node.js', 'Python', 'MySQL', 'PostgreSQL', 'API REST']],
+      ['AI e automazione', ['API OpenAI', 'API Anthropic', 'LangGraph', 'n8n', 'Playwright']],
+      ['Testing e strumenti', ['Test design', 'Analisi dei difetti', 'pytest', 'Jira', 'Postman', 'Git', 'Docker']],
     ] as [string, string[]][],
     contact: 'Costruiamo qualcosa.',
-    contactLead: 'Disponibile per lavori freelance e ruoli full-time. Qui sotto il modo più veloce per contattarmi.',
+    contactLead: 'Cerco un ruolo da junior software developer, con interesse per backend e applicazioni AI. Scrivimi o trovami su LinkedIn.',
     email: 'Scrivimi una email',
-    github: 'Profilo GitHub',
+    github: 'GitHub',
+    linkedin: 'LinkedIn',
     top: 'Torna su',
     built: 'Realizzato con Next.js',
   },
@@ -196,6 +202,7 @@ export default function Site() {
             <div className="cta">
               <a className="pill sun big" href="#projects">{c.seeWork}<i>↓</i></a>
               <a className="pill outline big" href="#contact">{c.getInTouch}<i>→</i></a>
+              <a className="pill outline big" href={CV} target="_blank" rel="noopener noreferrer">{c.cv}<i>↓</i></a>
             </div>
           </div>
         </section>
@@ -247,10 +254,12 @@ export default function Site() {
             <h2>{c.contact}</h2>
             <p className="lead">{c.contactLead}</p>
             <div className="cta">
-              {EMAIL && <a className="pill sun big" href={`mailto:${EMAIL}`}>{c.email}<i>→</i></a>}
-              <a className={`pill big ${EMAIL ? 'outline' : 'sun'}`} href="https://github.com/andreacassini" target="_blank" rel="noopener noreferrer">{c.github}<i>↗</i></a>
+              <a className="pill sun big" href={`mailto:${EMAIL}`}>{c.email}<i>→</i></a>
+              <a className="pill big outline" href={LINKEDIN} target="_blank" rel="noopener noreferrer">{c.linkedin}<i>↗</i></a>
+              <a className="pill big outline" href="https://github.com/andreacassini" target="_blank" rel="noopener noreferrer">{c.github}<i>↗</i></a>
+              <a className="pill big outline" href={CV} target="_blank" rel="noopener noreferrer">{c.cv}<i>↓</i></a>
             </div>
-            {EMAIL && <p className="addr">{EMAIL}</p>}
+            <p className="addr">{EMAIL}</p>
           </div>
         </section>
       </main>
