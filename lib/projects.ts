@@ -1,33 +1,44 @@
 export type Lang = 'en' | 'it';
-type L = Record<Lang, string>;
+export type L = Record<Lang, string>;
 
 export interface Project {
   id: string;
   title: string;
-  tag: L;
-  summary: L;
+  year: string;
+  one: L;
+  problem?: L;
+  approach?: L;
   stack: string[];
-  kind: 'ai' | 'web' | 'app' | 'ui';
   repo?: string;
   demo?: string;
+  status?: L;
   private?: boolean;
-  year: string;
 }
 
 const GH = 'https://github.com/andreacassini/';
 const PAGES = 'https://andreacassini.github.io/';
 
-export const projects: Project[] = [
+const PRIVATE: L = { en: 'Private repository', it: 'Repository privato' };
+
+/** Case studies: shown as expandable rows. Text comes from each repo's README. */
+export const featured: Project[] = [
   {
     id: 'proofline',
     title: 'Proofline',
     year: '2026',
-    kind: 'ai',
     private: true,
-    tag: { en: 'Multi-LLM iOS assistant', it: 'Assistente iOS multi-LLM' },
-    summary: {
-      en: 'Chat-first iOS app that coordinates several LLMs to plan, review and verify engineering work. A local runtime picks which models to involve and learns from the results.',
-      it: 'App iOS chat-first che coordina più LLM per pianificare, rivedere e verificare il lavoro di sviluppo. Un runtime locale sceglie i modelli da coinvolgere e impara dai risultati.',
+    status: PRIVATE,
+    one: {
+      en: 'An iOS assistant where several LLMs plan, review and verify engineering work.',
+      it: 'Un assistente iOS in cui più LLM pianificano, rivedono e verificano il lavoro di sviluppo.',
+    },
+    problem: {
+      en: 'One model rarely gives advice you can verify on implementation, security, design and quality.',
+      it: 'Un solo modello raramente dà indicazioni verificabili su implementazione, sicurezza, design e qualità.',
+    },
+    approach: {
+      en: 'A local runtime detects the available providers, chooses which models to involve and learns from results. Statuses separate planned work from executed work.',
+      it: 'Un runtime locale rileva i provider disponibili, sceglie quali modelli coinvolgere e impara dai risultati. Gli stati distinguono il lavoro pianificato da quello eseguito.',
     },
     stack: ['Swift', 'SwiftUI', 'Node.js', 'LLM orchestration'],
   },
@@ -35,12 +46,19 @@ export const projects: Project[] = [
     id: 'travel-intelligence',
     title: 'Travel Intelligence',
     year: '2026',
-    kind: 'app',
     private: true,
-    tag: { en: 'Trip decision engine', it: 'Motore decisionale per viaggi' },
-    summary: {
-      en: 'Turborepo monorepo with a Next.js front end, NestJS API and Temporal workflows that compare normalized results from six travel providers.',
-      it: 'Monorepo Turborepo con front end Next.js, API NestJS e workflow Temporal che confrontano i risultati normalizzati di sei provider di viaggio.',
+    status: PRIVATE,
+    one: {
+      en: 'A trip decision engine that compares six travel providers in one flow.',
+      it: 'Un motore decisionale per viaggi che confronta sei provider in un unico flusso.',
+    },
+    problem: {
+      en: 'Provider results arrive in different shapes, so comparing them by hand is slow and inconsistent.',
+      it: 'I risultati dei provider arrivano in formati diversi, quindi confrontarli a mano è lento e incoerente.',
+    },
+    approach: {
+      en: 'A Turborepo monorepo: Next.js front end, NestJS API and Temporal workflows over normalised provider results. The first demo runs on declared mock fixtures.',
+      it: 'Un monorepo Turborepo: front end Next.js, API NestJS e workflow Temporal sui risultati normalizzati dei provider. La prima demo usa fixture simulate dichiarate.',
     },
     stack: ['Next.js', 'NestJS', 'Temporal', 'PostgreSQL', 'Docker'],
   },
@@ -48,12 +66,19 @@ export const projects: Project[] = [
     id: 'testcraft',
     title: 'TestCraft AI',
     year: '2026',
-    kind: 'ai',
     private: true,
-    tag: { en: 'Test cases from requirements', it: 'Test case dai requisiti' },
-    summary: {
-      en: 'B2B SaaS for QA teams. Upload a requirement document and get structured test cases: happy path, edge cases, negative flows and boundaries.',
-      it: 'SaaS B2B per team QA. Carichi un documento di requisiti e ottieni test case strutturati: percorso felice, casi limite, flussi negativi e confini.',
+    status: { en: 'Alpha · private repository', it: 'Alpha · repository privato' },
+    one: {
+      en: 'Structured test cases generated from natural-language requirements.',
+      it: 'Test case strutturati generati da requisiti in linguaggio naturale.',
+    },
+    problem: {
+      en: 'A single requirement can take 30 to 60 minutes to cover, and quality varies between people.',
+      it: 'Coprire un singolo requisito può richiedere da 30 a 60 minuti e la qualità varia da persona a persona.',
+    },
+    approach: {
+      en: 'Upload a PDF, DOCX or text requirement and get happy paths, edge cases, negative flows and boundaries, ready to export. It comes from the work I did by hand for three years.',
+      it: 'Carichi un requisito in PDF, DOCX o testo e ottieni percorsi felici, casi limite, flussi negativi e confini, pronti da esportare. Nasce dal lavoro che ho fatto a mano per tre anni.',
     },
     stack: ['Python', 'React', 'Docker', 'LLM'],
   },
@@ -61,161 +86,94 @@ export const projects: Project[] = [
     id: 'the-applied-brief',
     title: 'The Applied Brief',
     year: '2026',
-    kind: 'ai',
     private: true,
-    tag: { en: 'Multi-agent newsletter system', it: 'Sistema multi-agent per newsletter' },
-    summary: {
-      en: 'Italian newsletter on applied AI, produced by a supervised agent pipeline with multi-agent review, plagiarism checks and mandatory human approval.',
-      it: 'Newsletter italiana sull\'AI applicata, prodotta da una pipeline di agenti supervisionata con revisione multi-agent, controllo anti-plagio e approvazione umana obbligatoria.',
+    status: PRIVATE,
+    one: {
+      en: 'A newsletter system run by supervised agents with a human final approval.',
+      it: 'Un sistema di newsletter gestito da agenti supervisionati con approvazione umana finale.',
     },
-    stack: ['LangGraph', 'Python', 'n8n', 'Postgres', 'pgvector'],
+    problem: {
+      en: 'AI-written content needs review, originality checks and a person who signs off.',
+      it: 'I contenuti scritti dall\'AI richiedono revisione, controlli di originalità e una persona che approva.',
+    },
+    approach: {
+      en: 'A LangGraph supervisor, multi-agent review with plagiarism checks and mandatory human approval. n8n handles publishing, Postgres with pgvector holds memory.',
+      it: 'Un supervisore LangGraph, revisione multi-agent con controllo anti-plagio e approvazione umana obbligatoria. n8n gestisce la pubblicazione, Postgres con pgvector la memoria.',
+    },
+    stack: ['LangGraph', 'Python', 'n8n', 'Postgres'],
   },
   {
     id: 'bug-ticket-creation',
     title: 'Jira Ticket Creator',
     year: '2026',
-    kind: 'ai',
     private: true,
-    tag: { en: 'Jira automation', it: 'Automazione Jira' },
-    summary: {
-      en: 'Reads defects from Excel, ranks similar existing tickets with embeddings and creates Jira incidents through browser automation. Covered by 67 unit tests.',
-      it: 'Legge i difetti da Excel, classifica i ticket simili con gli embedding e crea gli incident Jira tramite automazione del browser. Coperto da 67 test unitari.',
+    status: PRIVATE,
+    one: {
+      en: 'Defects from Excel to Jira incidents, with similar tickets ranked first.',
+      it: 'Dai difetti in Excel agli incident Jira, con i ticket simili ordinati per primi.',
     },
-    stack: ['Python', 'OpenAI Embeddings', 'Browser automation', 'pytest'],
+    problem: {
+      en: 'Logging repetitive defects by hand is slow, and duplicates slip through.',
+      it: 'Registrare a mano difetti ripetitivi è lento e i duplicati sfuggono.',
+    },
+    approach: {
+      en: 'Reads defects from Excel, ranks similar existing tickets with embeddings and creates incidents through browser automation. 67 unit tests, no browser needed.',
+      it: 'Legge i difetti da Excel, ordina i ticket simili con gli embedding e crea gli incident tramite automazione del browser. 67 test unitari, nessun browser necessario.',
+    },
+    stack: ['Python', 'OpenAI Embeddings', 'Playwright', 'pytest'],
+  },
+];
+
+/** Demos and earlier work: compact cards with live demo and code links. */
+export const earlier: Project[] = [
+  {
+    id: 'portfolio-professional', title: 'Portfolio 3D', year: '2025',
+    one: { en: 'Previous portfolio with React Three Fiber scenes, GSAP animation and smooth scrolling.', it: 'Portfolio precedente con scene React Three Fiber, animazioni GSAP e scorrimento fluido.' },
+    stack: ['Next.js', 'Three.js', 'GSAP'], repo: GH + 'portfolio-professional', demo: 'https://portfolio-mu-nine-25.vercel.app',
   },
   {
-    id: 'jarvis-core',
-    title: 'Jarvis Core',
-    year: '2026',
-    kind: 'ai',
-    repo: GH + 'jarvis-core',
-    tag: { en: 'Modular assistant core', it: 'Core modulare per assistente' },
-    summary: {
-      en: 'Python core for a personal assistant, split into connectors, core logic and installable skills.',
-      it: 'Core Python per un assistente personale, diviso in connettori, logica centrale e skill installabili.',
-    },
-    stack: ['Python'],
+    id: 'jarvis-core', title: 'Jarvis Core', year: '2026',
+    one: { en: 'Python core for a personal assistant, split into connectors, core logic and skills.', it: 'Core Python per un assistente personale, diviso in connettori, logica centrale e skill.' },
+    stack: ['Python'], repo: GH + 'jarvis-core',
   },
   {
-    id: 'openai-chatbot',
-    title: 'OpenAI Chatbot',
-    year: '2026',
-    kind: 'ai',
-    repo: GH + 'openai-chatbot',
-    tag: { en: 'Command-line chatbot', it: 'Chatbot da riga di comando' },
-    summary: {
-      en: 'A small CLI chatbot built on the OpenAI API, my first step into AI integration.',
-      it: 'Un piccolo chatbot CLI basato sull\'API OpenAI, il mio primo passo nell\'integrazione con l\'AI.',
-    },
-    stack: ['Python', 'OpenAI API'],
+    id: 'openai-chatbot', title: 'OpenAI Chatbot', year: '2026',
+    one: { en: 'A command-line chatbot on the OpenAI API, my first step into AI integration.', it: 'Un chatbot da riga di comando sull\'API OpenAI, il mio primo passo nell\'integrazione con l\'AI.' },
+    stack: ['Python', 'OpenAI API'], repo: GH + 'openai-chatbot',
   },
   {
-    id: 'portfolio-professional',
-    title: 'Portfolio 3D',
-    year: '2025',
-    kind: 'web',
-    repo: GH + 'portfolio-professional',
-    demo: 'https://portfolio-mu-nine-25.vercel.app',
-    tag: { en: 'Interactive 3D portfolio', it: 'Portfolio 3D interattivo' },
-    summary: {
-      en: 'Previous portfolio with React Three Fiber scenes, GSAP animation and smooth scrolling.',
-      it: 'Portfolio precedente con scene React Three Fiber, animazioni GSAP e scorrimento fluido.',
-    },
-    stack: ['Next.js', 'Three.js', 'GSAP', 'Tailwind'],
+    id: 'spotify', title: 'Spotify Web', year: '2023',
+    one: { en: 'Static recreation of the Spotify web player layout.', it: 'Ricostruzione statica del layout del web player di Spotify.' },
+    stack: ['HTML', 'CSS'], repo: GH + 'html-css-spotifyweb', demo: PAGES + 'html-css-spotifyweb/',
   },
   {
-    id: 'spotify',
-    title: 'Spotify Web',
-    year: '2023',
-    kind: 'ui',
-    repo: GH + 'html-css-spotifyweb',
-    demo: PAGES + 'html-css-spotifyweb/',
-    tag: { en: 'UI clone', it: 'Clone di interfaccia' },
-    summary: {
-      en: 'Static recreation of the Spotify web player layout.',
-      it: 'Ricostruzione statica del layout del web player di Spotify.',
-    },
-    stack: ['HTML', 'CSS'],
+    id: 'discord', title: 'Discord', year: '2023',
+    one: { en: 'Static recreation of the Discord landing page.', it: 'Ricostruzione statica della landing page di Discord.' },
+    stack: ['HTML', 'CSS'], repo: GH + 'htmlcss-discord', demo: PAGES + 'htmlcss-discord/',
   },
   {
-    id: 'discord',
-    title: 'Discord',
-    year: '2023',
-    kind: 'ui',
-    repo: GH + 'htmlcss-discord',
-    demo: PAGES + 'htmlcss-discord/',
-    tag: { en: 'UI clone', it: 'Clone di interfaccia' },
-    summary: {
-      en: 'Static recreation of the Discord landing page.',
-      it: 'Ricostruzione statica della landing page di Discord.',
-    },
-    stack: ['HTML', 'CSS'],
+    id: 'dashboard', title: 'Admin Dashboard', year: '2023',
+    one: { en: 'Responsive admin dashboard layout built with Bootstrap.', it: 'Layout responsive di una dashboard amministrativa con Bootstrap.' },
+    stack: ['HTML', 'CSS', 'Bootstrap'], repo: GH + 'html-css-bootstrap-dashboard', demo: PAGES + 'html-css-bootstrap-dashboard/',
   },
   {
-    id: 'dashboard',
-    title: 'Admin Dashboard',
-    year: '2023',
-    kind: 'ui',
-    repo: GH + 'html-css-bootstrap-dashboard',
-    demo: PAGES + 'html-css-bootstrap-dashboard/',
-    tag: { en: 'Responsive dashboard', it: 'Dashboard responsive' },
-    summary: {
-      en: 'Responsive admin dashboard layout built with Bootstrap.',
-      it: 'Layout responsive di una dashboard amministrativa realizzato con Bootstrap.',
-    },
-    stack: ['HTML', 'CSS', 'Bootstrap'],
+    id: 'freelancer', title: 'Freelancer Theme', year: '2023',
+    one: { en: 'One-page freelancer portfolio template built with Bootstrap.', it: 'Template di portfolio one-page per freelance con Bootstrap.' },
+    stack: ['HTML', 'CSS', 'Bootstrap'], repo: GH + 'html-css-bootstrap-freelancer', demo: PAGES + 'html-css-bootstrap-freelancer/',
   },
   {
-    id: 'freelancer',
-    title: 'Freelancer Theme',
-    year: '2023',
-    kind: 'ui',
-    repo: GH + 'html-css-bootstrap-freelancer',
-    demo: PAGES + 'html-css-bootstrap-freelancer/',
-    tag: { en: 'Bootstrap landing page', it: 'Landing page Bootstrap' },
-    summary: {
-      en: 'One-page freelancer portfolio template built with Bootstrap.',
-      it: 'Template di portfolio one-page per freelance realizzato con Bootstrap.',
-    },
-    stack: ['HTML', 'CSS', 'Bootstrap'],
+    id: 'boolzapp', title: 'Boolzapp', year: '2023',
+    one: { en: 'WhatsApp-style chat with conversations, search and message actions.', it: 'Chat in stile WhatsApp con conversazioni, ricerca e azioni sui messaggi.' },
+    stack: ['Vue', 'JavaScript'], repo: GH + 'vue-boolzapp',
   },
   {
-    id: 'boolzapp',
-    title: 'Boolzapp',
-    year: '2023',
-    kind: 'app',
-    repo: GH + 'vue-boolzapp',
-    tag: { en: 'Chat app in Vue', it: 'Chat app in Vue' },
-    summary: {
-      en: 'WhatsApp-style chat with conversations, search and message actions.',
-      it: 'Chat in stile WhatsApp con conversazioni, ricerca e azioni sui messaggi.',
-    },
-    stack: ['Vue', 'JavaScript'],
+    id: 'boolflix', title: 'Boolflix', year: '2023',
+    one: { en: 'Netflix-style catalogue that searches films and series through the TMDB API.', it: 'Catalogo in stile Netflix che cerca film e serie tramite l\'API di TMDB.' },
+    stack: ['Vue', 'Vite', 'REST API'], repo: GH + 'vite-boolflix',
   },
   {
-    id: 'boolflix',
-    title: 'Boolflix',
-    year: '2023',
-    kind: 'app',
-    repo: GH + 'vite-boolflix',
-    tag: { en: 'Streaming catalogue', it: 'Catalogo streaming' },
-    summary: {
-      en: 'Netflix-style catalogue that searches films and series through the TMDB API.',
-      it: 'Catalogo in stile Netflix che cerca film e serie tramite l\'API di TMDB.',
-    },
-    stack: ['Vue', 'Vite', 'REST API'],
-  },
-  {
-    id: 'laravel-api',
-    title: 'Laravel API',
-    year: '2023',
-    kind: 'app',
-    repo: GH + 'laravel-api',
-    tag: { en: 'Back end and REST API', it: 'Back end e REST API' },
-    summary: {
-      en: 'Laravel project with authentication, many-to-many relations and a JSON API consumed by a Vue front end.',
-      it: 'Progetto Laravel con autenticazione, relazioni many-to-many e un\'API JSON consumata da un front end Vue.',
-    },
-    stack: ['Laravel', 'PHP', 'MySQL', 'REST'],
+    id: 'laravel-api', title: 'Laravel API', year: '2023',
+    one: { en: 'Laravel project with authentication, many-to-many relations and a JSON API for a Vue front end.', it: 'Progetto Laravel con autenticazione, relazioni many-to-many e un\'API JSON per un front end Vue.' },
+    stack: ['Laravel', 'PHP', 'MySQL'], repo: GH + 'laravel-api',
   },
 ];

@@ -1,146 +1,192 @@
 'use client';
 
-import { useEffect, useMemo, useState } from 'react';
-import WaveField from './WaveField';
+import { useState } from 'react';
 import { useLang } from '@/lib/i18n';
-import { projects, type Lang, type Project } from '@/lib/projects';
+import { earlier, featured, type Lang, type Project } from '@/lib/projects';
 
 const EMAIL = process.env.NEXT_PUBLIC_CONTACT_EMAIL || 'info@andreacassini.com';
 const LINKEDIN = 'https://www.linkedin.com/in/andrea-cassini-a316161ba';
+const GITHUB = 'https://github.com/andreacassini';
 const CV = '/Andrea_Cassini_CV_en_2026.pdf';
 
 const t = {
   en: {
-    nav: ['Projects', 'About', 'Contact'],
-    hi: 'Hi, my name is',
-    roles: ['junior software developer', 'computer engineering graduate', 'Vue, Laravel and Python', 'based in Turin, Italy'],
-    lead: 'Computer Engineering graduate with full-stack training and nearly three years in automotive software validation. I build web apps and AI tools. Browse the projects, read the code and open the live demos.',
-    seeWork: 'See projects',
-    getInTouch: 'Get in touch',
-    cv: 'Download CV',
-    projects: 'Projects',
-    count: (n: number) => `${n} selected from GitHub`,
-    all: 'All',
-    kinds: { ai: 'AI', web: 'Web', app: 'Apps', ui: 'UI' },
+    nav: ['Work', 'Method', 'Path', 'Contact'],
+    cv: 'CV',
+    role: 'Junior software developer · Torino',
+    h1a: 'Three years finding what breaks.',
+    h1b: "Now building what doesn't.",
+    sub: 'Computer Engineering graduate with three years validating automotive software at Reply. I build web apps and AI tools, and I test everything I ship.',
+    seeWork: 'See the work',
+    touch: 'Get in touch',
+    hint: 'click anywhere to stamp',
+    seal: '検査済 · inspected',
+    facts: [
+      ['Base', 'Torino, Italy'],
+      ['Education', 'Computer Engineering, 2026'],
+      ['Experience', '3 yrs software validation'],
+      ['Looking for', 'Junior developer · backend, AI'],
+    ],
+    workT: 'Selected work',
+    workP: 'Each project is inspected: what it solves, how it works and what is still open.',
+    problem: 'Problem',
+    approach: 'Approach',
+    stackStatus: 'Stack · status',
+    earlierT: 'Demos and earlier work',
+    earlierP: 'Live demos and the code behind them.',
     demo: 'Live demo',
     code: 'Code',
-    priv: 'Private repository',
-    about: 'About',
-    p1: 'I am a Computer Engineering graduate based in Turin. I learned full-stack development with PHP, Laravel, JavaScript and Vue.js, then spent nearly three years in software validation at Reply, testing infotainment, connectivity and powertrain systems for automotive clients.',
-    p2: 'Testing taught me to find root causes and to write software that is easy to verify. Now I am moving into development, with a focus on backend and AI applications, and I build my own projects with the OpenAI and Anthropic APIs.',
-    skills: [
-      ['Front end', ['JavaScript', 'TypeScript', 'Vue.js', 'React', 'Next.js', 'HTML / CSS', 'Bootstrap', 'Tailwind']],
-      ['Back end', ['PHP', 'Laravel', 'Node.js', 'Python', 'MySQL', 'PostgreSQL', 'REST APIs']],
-      ['AI and automation', ['OpenAI API', 'Anthropic API', 'LangGraph', 'n8n', 'Playwright']],
-      ['Testing and tools', ['Test design', 'Defect analysis', 'pytest', 'Jira', 'Postman', 'Git', 'Docker']],
-    ] as [string, string[]][],
-    contact: "Let's build something.",
-    contactLead: 'I am looking for a junior software developer role, with an interest in backend and AI applications. Write to me or find me on LinkedIn.',
+    methodT: 'How I work',
+    methodP: 'Habits from validation, visible in the code.',
+    principle: 'Principle',
+    evidence: 'Evidence',
+    method: [
+      ['Reproduce first', 'I find the root cause before I touch the fix. Three years of reading traces and writing defect reports made it automatic.', 'Jira ticket creator, 67 unit tests'],
+      ['Make it verifiable', 'Fixtures, tests and statuses that tell planned work from executed work, so nobody has to trust my word.', 'Proofline, Travel Intelligence'],
+      ['Say what is not done', 'An alpha stays labelled alpha. A demo built on mock data says so on the first page.', 'TestCraft AI'],
+    ],
+    pathT: 'Path',
+    pathP: 'From the web, to cars, back to building.',
+    path: [
+      ['Dec 2023 — now', 'Software & Systems Validation · Reply', 'End-to-end infotainment and connectivity testing, defect triage and test case management for Italdesign/Audi, Lamborghini, Aston Martin and Stellantis. Trace analysis and release readiness on e-Traction, powertrain and battery projects.'],
+      ['Oct 2026', 'B.Sc. Computer Engineering · Universitas Mercatorum', 'Thesis: manual and automated software testing and their differences.'],
+      ['2023', 'Full-stack web programming · Boolean', 'PHP, Laravel, JavaScript, Vue.js, HTML, CSS and SQL, with individual and team projects.'],
+      ['2020 — 2021', 'Full-stack web developer · Freelance', 'Frontend, backend and database development with PHP, Laravel, JavaScript and SQL.'],
+    ],
+    open: 'Open to work',
+    contactH: "Let's build something that holds up.",
     email: 'Send an email',
-    github: 'GitHub',
-    linkedin: 'LinkedIn',
-    top: 'Back to top',
-    built: 'Built with Next.js',
+    downloadCv: 'Download CV',
+    foot: 'built and tested in Torino',
   },
   it: {
-    nav: ['Progetti', 'Chi sono', 'Contatti'],
-    hi: 'Ciao, mi chiamo',
-    roles: ['junior software developer', 'laureato in Ing. Informatica', 'Vue, Laravel e Python', 'di base a Torino'],
-    lead: 'Laureato in Ingegneria Informatica con formazione full-stack e quasi tre anni di validazione software nel settore automotive. Sviluppo web app e strumenti AI. Trovi i progetti, il codice e le demo online.',
-    seeWork: 'Vedi i progetti',
-    getInTouch: 'Contattami',
-    cv: 'Scarica il CV',
-    projects: 'Progetti',
-    count: (n: number) => `${n} selezionati da GitHub`,
-    all: 'Tutti',
-    kinds: { ai: 'AI', web: 'Web', app: 'App', ui: 'UI' },
+    nav: ['Lavori', 'Metodo', 'Percorso', 'Contatti'],
+    cv: 'CV',
+    role: 'Junior software developer · Torino',
+    h1a: 'Tre anni a cercare cosa si rompe.',
+    h1b: 'Ora costruisco ciò che regge.',
+    sub: 'Laureato in Ingegneria Informatica, con tre anni di validazione software automotive in Reply. Sviluppo web app e strumenti AI e collaudo tutto ciò che consegno.',
+    seeWork: 'Vedi i lavori',
+    touch: 'Contattami',
+    hint: 'clicca ovunque per timbrare',
+    seal: '検査済 · ispezionato',
+    facts: [
+      ['Base', 'Torino, Italia'],
+      ['Studi', 'Ingegneria Informatica, 2026'],
+      ['Esperienza', '3 anni di validazione software'],
+      ['Cerco', 'Ruolo junior · backend, AI'],
+    ],
+    workT: 'Lavori selezionati',
+    workP: 'Ogni progetto viene ispezionato: cosa risolve, come funziona e cosa resta aperto.',
+    problem: 'Problema',
+    approach: 'Approccio',
+    stackStatus: 'Stack · stato',
+    earlierT: 'Demo e lavori precedenti',
+    earlierP: 'Demo online e il codice che c\'è dietro.',
     demo: 'Demo live',
     code: 'Codice',
-    priv: 'Repository privato',
-    about: 'Chi sono',
-    p1: 'Sono laureato in Ingegneria Informatica e vivo a Torino. Ho imparato lo sviluppo full-stack con PHP, Laravel, JavaScript e Vue.js, poi ho passato quasi tre anni in validazione software in Reply, testando sistemi di infotainment, connettività e powertrain per clienti automotive.',
-    p2: 'Il testing mi ha insegnato a cercare le cause radice e a scrivere software facile da verificare. Ora passo allo sviluppo, con interesse per backend e applicazioni AI, e costruisco progetti miei con le API di OpenAI e Anthropic.',
-    skills: [
-      ['Front end', ['JavaScript', 'TypeScript', 'Vue.js', 'React', 'Next.js', 'HTML / CSS', 'Bootstrap', 'Tailwind']],
-      ['Back end', ['PHP', 'Laravel', 'Node.js', 'Python', 'MySQL', 'PostgreSQL', 'API REST']],
-      ['AI e automazione', ['API OpenAI', 'API Anthropic', 'LangGraph', 'n8n', 'Playwright']],
-      ['Testing e strumenti', ['Test design', 'Analisi dei difetti', 'pytest', 'Jira', 'Postman', 'Git', 'Docker']],
-    ] as [string, string[]][],
-    contact: 'Costruiamo qualcosa.',
-    contactLead: 'Cerco un ruolo da junior software developer, con interesse per backend e applicazioni AI. Scrivimi o trovami su LinkedIn.',
+    methodT: 'Come lavoro',
+    methodP: 'Abitudini della validazione, visibili nel codice.',
+    principle: 'Principio',
+    evidence: 'Prova',
+    method: [
+      ['Prima riproduco', 'Trovo la causa radice prima di toccare la correzione. Tre anni di tracce e report di difetti lo hanno reso automatico.', 'Jira ticket creator, 67 test unitari'],
+      ['Lo rendo verificabile', 'Fixture, test e stati che distinguono il lavoro pianificato da quello eseguito, così nessuno deve fidarsi sulla parola.', 'Proofline, Travel Intelligence'],
+      ['Dico cosa non è fatto', 'Un alpha resta etichettato alpha. Una demo con dati simulati lo dice già nella prima pagina.', 'TestCraft AI'],
+    ],
+    pathT: 'Percorso',
+    pathP: 'Dal web alle auto, e di nuovo a costruire.',
+    path: [
+      ['Dic 2023 — oggi', 'Software & Systems Validation · Reply', 'Test end-to-end di infotainment e connettività, analisi dei difetti e gestione dei test case per Italdesign/Audi, Lamborghini, Aston Martin e Stellantis. Analisi delle tracce e release readiness su progetti e-Traction, powertrain e batterie.'],
+      ['Ott 2026', 'Laurea in Ingegneria Informatica · Universitas Mercatorum', 'Tesi: test software manuale e automatizzato e le loro differenze.'],
+      ['2023', 'Programmazione web full-stack · Boolean', 'PHP, Laravel, JavaScript, Vue.js, HTML, CSS e SQL, con progetti individuali e di gruppo.'],
+      ['2020 — 2021', 'Sviluppatore web full-stack · Freelance', 'Sviluppo frontend, backend e database con PHP, Laravel, JavaScript e SQL.'],
+    ],
+    open: 'Disponibile',
+    contactH: 'Costruiamo qualcosa che regga.',
     email: 'Scrivimi una email',
-    github: 'GitHub',
-    linkedin: 'LinkedIn',
-    top: 'Torna su',
-    built: 'Realizzato con Next.js',
+    downloadCv: 'Scarica il CV',
+    foot: 'costruito e collaudato a Torino',
   },
 };
 
-function useTyped(words: string[]) {
-  const [text, setText] = useState(words[0]);
-  useEffect(() => {
-    // eslint-disable-next-line react-hooks/set-state-in-effect
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) { setText(words[0]); return; }
-    let w = 0, i = 0, del = false;
-    let id: ReturnType<typeof setTimeout>;
-    const tick = () => {
-      const word = words[w];
-      i += del ? -1 : 1;
-      setText(word.slice(0, i));
-      let wait = del ? 28 : 65;
-      if (!del && i === word.length) { del = true; wait = 1600; }
-      else if (del && i === 0) { del = false; w = (w + 1) % words.length; wait = 350; }
-      id = setTimeout(tick, wait);
-    };
-    id = setTimeout(tick, 400);
-    return () => clearTimeout(id);
-  }, [words]);
-  return text;
+function Seal({ className, big }: { className?: string; big?: boolean }) {
+  return <svg className={className} viewBox="0 0 100 100" aria-hidden="true"><use href={big ? '#seal' : '#mini'} /></svg>;
 }
 
-const TONES: Record<Project['kind'], string> = { ai: 'sun', web: 'coral', app: 'sea', ui: 'mint' };
-
-function Art({ kind }: { kind: Project['kind'] }) {
-  const p = { fill: 'none', stroke: 'currentColor', strokeWidth: 3 } as const;
-  if (kind === 'ai') return (
-    <svg viewBox="0 0 200 120" aria-hidden="true">{[0, 1, 2, 3, 4].map((i) => <circle key={i} cx={40 + i * 30} cy={60 + (i % 2 ? 22 : -22)} r={10 + i * 3} {...p} />)}</svg>
-  );
-  if (kind === 'web') return (
-    <svg viewBox="0 0 200 120" aria-hidden="true"><rect x="20" y="16" width="160" height="88" rx="10" {...p} /><path d="M20 38h160" {...p} /><circle cx="36" cy="27" r="3" fill="currentColor" /><path d="M44 62h60M44 78h90" {...p} /></svg>
-  );
-  if (kind === 'app') return (
-    <svg viewBox="0 0 200 120" aria-hidden="true"><rect x="70" y="8" width="60" height="104" rx="14" {...p} /><path d="M88 20h24" {...p} /><circle cx="100" cy="92" r="6" {...p} /></svg>
-  );
+function Defs() {
   return (
-    <svg viewBox="0 0 200 120" aria-hidden="true">{[0, 1, 2, 3].map((i) => <path key={i} d={`M10 ${30 + i * 24} Q 55 ${10 + i * 24} 100 ${30 + i * 24} T 190 ${30 + i * 24}`} {...p} />)}</svg>
+    <svg width="0" height="0" style={{ position: 'absolute' }} aria-hidden="true" focusable="false">
+      <defs>
+        <filter id="ink" x="-10%" y="-10%" width="120%" height="120%">
+          <feTurbulence type="fractalNoise" baseFrequency=".035" numOctaves="3" seed="4" result="n" />
+          <feDisplacementMap in="SourceGraphic" in2="n" scale="3.2" />
+        </filter>
+        <symbol id="seal" viewBox="0 0 100 100">
+          <g filter="url(#ink)" fill="none" stroke="#e2382c">
+            <circle cx="50" cy="50" r="46" strokeWidth="4.5" />
+            <circle cx="50" cy="50" r="38" strokeWidth="1.4" />
+            <path id="arc" d="M50 50 m-31 0 a31 31 0 1 1 62 0 a31 31 0 1 1 -62 0" stroke="none" />
+            <text fill="#e2382c" stroke="none" fontFamily="var(--font-body), sans-serif" fontWeight="700" fontSize="7.2" letterSpacing="1.6">
+              <textPath href="#arc">ANDREA CASSINI · INSPECTED ·</textPath>
+            </text>
+            <path d="M49.3 39.4Q51.6 39.5 54.1 39.6H57.9L58.7 38.3Q58.9 38 59.2 37.7Q59.4 37.3 59.6 37.1Q59.7 37 59.9 37Q60.1 37 60.9 37.6Q61.8 38.3 62.5 39.1Q63.2 39.8 63.2 40.1Q63 40.8 62.2 40.8H58.2V44.4H61.6L62.4 43.1Q62.6 42.9 62.9 42.5Q63.1 42.2 63.3 42Q63.4 41.8 63.6 41.8Q63.8 41.8 64.7 42.5Q65.6 43.2 66.4 44Q67.2 44.8 67.2 45Q66.8 45.6 65.8 45.8V48.5Q65.9 51.8 66.1 53.7Q65.8 54 64.8 54.4Q63.8 54.8 62.4 54.8H61.7V53.3H58.2Q59.5 56.2 62.2 58.1Q64.9 60 68.4 60.6V61Q67.1 61.4 66.3 62.6Q65.4 63.8 65 65.6Q62 63.9 60.3 61.2Q58.5 58.6 57.6 54.4Q56.7 58.2 53.6 61Q50.5 63.8 44 65.6L43.8 65.1Q48.6 62.8 50.9 59.9Q53.2 57 53.7 53.3H50.6V54.4Q50.6 54.6 50.2 54.8Q49.8 55.1 49 55.3Q48.2 55.4 47.3 55.4Q46.8 55.4 46.6 55.2Q46.4 55 46.4 54.6Q46.6 53.2 46.6 51V48.8Q46.4 49.4 46 49.7Q45.5 50 45 50Q44.1 50 43.3 49.2Q43.2 47.9 42.8 46.3Q42.3 44.8 41.6 43.5V54.6Q41.7 59.6 41.9 64Q41.6 64.5 40.4 65Q39.2 65.6 38.1 65.6Q37.5 65.6 37.1 65.3Q36.8 65.1 36.8 64.8Q37 62.6 37.1 60.4Q37.2 58.3 37.2 55V49.6Q35.1 53.4 32 56.2L31.5 55.8Q35.3 49.5 36.8 39.1H35.4Q34.3 39.1 33 39.6L32 37.6Q33.4 37.8 35.5 37.9H37.2V36.1Q37.2 31 36.7 27.9Q40 28.6 41.3 29.1Q42.6 29.5 42.6 29.8Q42.6 30 42.3 30.2L41.6 30.6V37.9H41.8L42.6 36.4Q42.8 36.2 43 35.8Q43.3 35.4 43.5 35.1Q43.7 34.9 43.8 34.9Q44.1 34.9 44.9 35.7Q45.7 36.4 46.5 37.3Q47.2 38.2 47.2 38.4Q47 39.1 46.2 39.1H41.6V42.6L41.6 42.5Q43.8 43.3 45 44.4Q46.2 45.5 46.6 46.6Q46.6 44.2 46.4 42.4L51 44.4H54V40.8H52.4Q51.2 40.8 49.8 41.3L48.9 39.6Q47.2 40.8 45.4 41.6L45.1 41.2Q47.8 39 50 35.2Q51 33.5 51.8 31.4Q52.5 29.3 52.6 27.6Q58.4 29.2 58.4 29.8Q58.4 29.9 58.1 30.1L57.3 30.4Q59.1 32.6 62.1 34.2Q65.1 35.8 68.4 36.5L68.4 37Q66.4 37.9 66 41.3Q63 39.6 60.7 36.8Q58.3 34.1 56.8 30.8Q55.7 33.2 53.8 35.4Q51.8 37.6 49.3 39.4ZM54 45.5H50.6V52.2H53.9Q54 50.8 54 49.3ZM58.2 49.2Q58.2 50.9 58 52.2H61.7V45.5H58.2Z" fill="#e2382c" stroke="none" />
+          </g>
+        </symbol>
+        <symbol id="mini" viewBox="0 0 100 100">
+          <g filter="url(#ink)" fill="none" stroke="#e2382c">
+            <circle cx="50" cy="50" r="44" strokeWidth="7" />
+            <path d="M49 36.3Q52.3 36.5 55.7 36.6H61L62.2 34.8Q62.5 34.5 62.8 34Q63.2 33.4 63.4 33.2Q63.6 32.9 63.8 32.9Q64.2 32.9 65.3 33.9Q66.5 34.8 67.5 35.9Q68.5 37 68.5 37.4Q68.3 38.3 67 38.3H61.4V43.3H66.2L67.4 41.5Q67.6 41.2 68 40.7Q68.4 40.2 68.6 40Q68.8 39.7 69 39.7Q69.4 39.7 70.6 40.7Q71.9 41.7 73 42.8Q74.1 43.9 74.1 44.3Q73.6 45 72.2 45.3V49.1Q72.3 53.7 72.5 56.4Q72.2 56.9 70.8 57.4Q69.4 57.9 67.4 57.9H66.4V55.8H61.4Q63.3 59.8 67.1 62.5Q70.9 65.1 75.7 66V66.7Q74 67.2 72.8 68.8Q71.6 70.5 71.1 73Q66.9 70.6 64.4 66.9Q61.9 63.2 60.6 57.3Q59.4 62.6 55.1 66.6Q50.7 70.5 41.6 73L41.3 72.3Q48 69.1 51.2 65Q54.4 61 55.2 55.8H50.8V57.4Q50.8 57.6 50.3 58Q49.7 58.3 48.6 58.6Q47.5 58.8 46.2 58.8Q45.6 58.8 45.3 58.5Q45 58.1 45 57.7Q45.2 55.7 45.3 52.7V49.6Q45 50.4 44.3 50.8Q43.7 51.3 42.9 51.3Q41.7 51.3 40.6 50.1Q40.5 48.2 39.9 46.1Q39.2 43.9 38.2 42.1V57.6Q38.4 64.6 38.7 70.8Q38.3 71.5 36.6 72.2Q34.9 73 33.3 73Q32.5 73 32 72.6Q31.5 72.3 31.5 71.9Q31.7 68.8 31.9 65.8Q32 62.8 32.1 58.1V50.7Q29.1 55.9 24.8 59.9L24.1 59.3Q29.4 50.5 31.6 35.9H29.6Q28 36 26.3 36.7L24.8 33.8Q26.8 34.2 29.7 34.3H32.1V31.7Q32.1 24.7 31.4 20.2Q36.1 21.3 37.8 21.9Q39.6 22.5 39.6 22.9Q39.6 23.1 39.2 23.4L38.2 24.1V34.3H38.5L39.7 32.2Q39.9 31.9 40.3 31.3Q40.6 30.7 40.9 30.4Q41.2 30.1 41.4 30.1Q41.7 30.1 42.9 31.2Q44 32.2 45 33.4Q46.1 34.6 46.1 35Q45.9 35.9 44.6 35.9H38.2V40.8L38.3 40.7Q41.3 41.8 43 43.4Q44.7 44.9 45.3 46.5Q45.3 43 45 40.5L51.4 43.3H55.6V38.3H53.4Q51.7 38.3 49.7 39L48.5 36.6Q46.1 38.3 43.5 39.4L43.2 38.8Q46.9 35.7 50 30.5Q51.5 28.1 52.5 25.1Q53.5 22.2 53.7 19.9Q61.8 22.1 61.8 22.9Q61.8 23.1 61.3 23.3L60.2 23.8Q62.8 26.8 67 29.1Q71.2 31.4 75.8 32.3L75.8 33Q73 34.2 72.3 39Q68.3 36.6 64.9 32.7Q61.6 28.9 59.6 24.3Q58 27.7 55.3 30.8Q52.6 33.8 49 36.3ZM55.6 44.9H50.8V54.2H55.4Q55.6 52.3 55.6 50.2ZM61.4 50.1Q61.4 52.4 61.2 54.2H66.4V44.9H61.4Z" fill="#e2382c" stroke="none" />
+          </g>
+        </symbol>
+      </defs>
+    </svg>
   );
 }
 
-function Card({ p, lang }: { p: Project; lang: Lang }) {
+function Skyline() {
+  return (
+    <svg className="skyline" viewBox="0 0 1000 90" preserveAspectRatio="none" aria-hidden="true">
+      <path d="M0 90V60h40V44h30v16h30V30h26v60h34V52h40V38h24v52h50V56h36V20l8-16 8 16v70h40V64h30V48h38v42h60V58h30V40h34v50h50V62h42V46h30v44h60V54h40V66h34v24h60V50h30V36h28v54h70V62h40V70h60V90z" fill="none" stroke="#222733" strokeWidth="1.4" />
+      <g fill="#ffb347" opacity=".7"><rect x="120" y="50" width="3" height="3" /><rect x="330" y="46" width="3" height="3" /><rect x="520" y="50" width="3" height="3" /><rect x="770" y="54" width="3" height="3" /><rect x="900" y="44" width="3" height="3" /></g>
+    </svg>
+  );
+}
+
+function Case({ p, lang, open, onToggle }: { p: Project; lang: Lang; open: boolean; onToggle: () => void }) {
   const c = t[lang];
-  const [tilt, setTilt] = useState('');
   return (
-    <article
-      className={`tile ${TONES[p.kind]}`}
-      style={{ transform: tilt }}
-      onPointerMove={(e) => {
-        if (e.pointerType !== 'mouse') return;
-        const r = e.currentTarget.getBoundingClientRect();
-        const x = (e.clientX - r.left) / r.width - 0.5, y = (e.clientY - r.top) / r.height - 0.5;
-        setTilt(`perspective(900px) rotateX(${(-y * 4).toFixed(2)}deg) rotateY(${(x * 4).toFixed(2)}deg) scale(1.015)`);
-      }}
-      onPointerLeave={() => setTilt('')}
-    >
-      <div className="tile-art"><Art kind={p.kind} /></div>
-      <div className="tile-meta"><span>{c.kinds[p.kind]}</span><span>{p.year}</span></div>
+    <details className="pj" open={open}>
+      <summary onClick={(e) => { e.preventDefault(); onToggle(); }}>
+        <span className="yr">{p.year}</span>
+        <div><h3>{p.title}</h3><p className="one">{p.one[lang]}</p></div>
+        <Seal className="stm" />
+      </summary>
+      <div className="cs">
+        <div />
+        <div><h4>{c.problem}</h4><p>{p.problem?.[lang]}</p></div>
+        <div><h4>{c.approach}</h4><p>{p.approach?.[lang]}</p></div>
+        <div>
+          <h4>{c.stackStatus}</h4>
+          <ul className="chips">{p.stack.map((s) => <li key={s}>{s}</li>)}</ul>
+          {p.status && <span className="lk">{p.status[lang]}</span>}
+        </div>
+      </div>
+    </details>
+  );
+}
+
+function Earlier({ p, lang }: { p: Project; lang: Lang }) {
+  const c = t[lang];
+  return (
+    <article className="ec">
+      <div className="top"><span className="mo">{p.year}</span></div>
       <h3>{p.title}</h3>
-      <p className="tag">{p.tag[lang]}</p>
-      <p className="sum">{p.summary[lang]}</p>
-      <ul className="stack">{p.stack.map((s) => <li key={s}>{s}</li>)}</ul>
+      <p>{p.one[lang]}</p>
+      <ul className="chips">{p.stack.map((s) => <li key={s}>{s}</li>)}</ul>
       <div className="acts">
-        {p.demo && <a className="pill dark" href={p.demo} target="_blank" rel="noopener noreferrer">{c.demo}<i>↗</i></a>}
-        {p.repo && <a className="pill ghost" href={p.repo} target="_blank" rel="noopener noreferrer">{c.code}<i>↗</i></a>}
-        {p.private && <span className="priv">{c.priv}</span>}
+        {p.demo && <a className="d" href={p.demo} target="_blank" rel="noopener noreferrer">{c.demo} ↗</a>}
+        {p.repo && <a href={p.repo} target="_blank" rel="noopener noreferrer">{c.code} ↗</a>}
       </div>
     </article>
   );
@@ -149,126 +195,107 @@ function Card({ p, lang }: { p: Project; lang: Lang }) {
 export default function Site() {
   const { lang, setLang } = useLang();
   const c = t[lang];
-  const typed = useTyped(c.roles);
-  const [filter, setFilter] = useState<'all' | Project['kind']>('all');
+  const [open, setOpen] = useState<string | null>(featured[0].id);
+  const [stamps, setStamps] = useState<{ id: number; x: number; y: number; r: number }[]>([]);
 
-  useEffect(() => {
-    try {
-      const s = localStorage.getItem('theme');
-      if (s === 'light' || s === 'dark') document.documentElement.dataset.theme = s;
-    } catch {}
-  }, []);
-
-  const toggleTheme = () => {
-    const root = document.documentElement;
-    const dark = root.dataset.theme === 'dark' || (!root.dataset.theme && window.matchMedia('(prefers-color-scheme: dark)').matches);
-    const next = dark ? 'light' : 'dark';
-    root.dataset.theme = next;
-    try { localStorage.setItem('theme', next); } catch {}
+  const stamp = (e: React.PointerEvent<HTMLDivElement>) => {
+    if ((e.target as HTMLElement).closest('a, button')) return;
+    const r = e.currentTarget.getBoundingClientRect();
+    const id = Date.now() + Math.random();
+    setStamps((s) => [...s.slice(-13), { id, x: e.clientX - r.left, y: e.clientY - r.top, r: Math.random() * 40 - 20 }]);
+    setTimeout(() => setStamps((s) => s.filter((x) => x.id !== id)), 7200);
   };
-
-  const kinds = useMemo(() => Array.from(new Set(projects.map((p) => p.kind))), []);
-  const shown = projects.filter((p) => filter === 'all' || p.kind === filter);
-  const marquee = useMemo(() => Array.from(new Set(projects.flatMap((p) => p.stack))), []);
 
   return (
     <>
+      <Defs />
       <header className="nav">
-        <div className="wrap nav-in">
-          <a className="logo" href="#top">AC<span>.</span></a>
+        <div className="w">
+          <a className="brand" href="#top"><Seal /><span className="bn">Andrea Cassini</span></a>
           <nav className="links" aria-label="Main">
-            <a href="#projects">{c.nav[0]}</a>
-            <a href="#about">{c.nav[1]}</a>
-            <a href="#contact">{c.nav[2]}</a>
-          </nav>
-          <div className="tools">
-            <div className="seg" role="group" aria-label="Language">
+            <a href="#work">{c.nav[0]}</a><a href="#method">{c.nav[1]}</a><a href="#path">{c.nav[2]}</a><a href="#contact">{c.nav[3]}</a>
+            <span className="lang" role="group" aria-label="Language">
               <button aria-pressed={lang === 'en'} onClick={() => setLang('en')}>EN</button>
               <button aria-pressed={lang === 'it'} onClick={() => setLang('it')}>IT</button>
-            </div>
-            <button className="round" onClick={toggleTheme} aria-label="Toggle theme">◐</button>
-          </div>
+            </span>
+            <a className="cvb" href={CV} target="_blank" rel="noopener noreferrer">{c.cv} ↓</a>
+          </nav>
         </div>
       </header>
 
       <main id="top">
-        <section className="hero">
-          <WaveField />
-          <div className="wrap hero-in">
-            <span className="eyebrow">{c.hi}</span>
-            <h1>Andrea<br />Cassini<span>.</span></h1>
-            <div className="role">{typed}</div>
-            <p className="lead">{c.lead}</p>
-            <div className="cta">
-              <a className="pill sun big" href="#projects">{c.seeWork}<i>↓</i></a>
-              <a className="pill outline big" href="#contact">{c.getInTouch}<i>→</i></a>
-              <a className="pill outline big" href={CV} target="_blank" rel="noopener noreferrer">{c.cv}<i>↓</i></a>
-            </div>
-          </div>
-        </section>
-
-        <div className="marquee" aria-hidden="true">
-          <div className="track">
-            {[...marquee, ...marquee].map((s, i) => <span key={i}>{s}<b>✦</b></span>)}
-          </div>
-        </div>
-
-        <section className="block" id="projects">
-          <div className="wrap">
-            <div className="sec-head">
-              <h2>{c.projects}</h2>
-              <span>{c.count(projects.length)}</span>
-            </div>
-            <div className="filters" role="group" aria-label="Filter">
-              <button className="pill ghost" aria-pressed={filter === 'all'} onClick={() => setFilter('all')}>{c.all}</button>
-              {kinds.map((k) => (
-                <button key={k} className="pill ghost" aria-pressed={filter === k} onClick={() => setFilter(k)}>{c.kinds[k]}</button>
-              ))}
-            </div>
-            <div className="grid">
-              {shown.map((p) => <Card key={p.id} p={p} lang={lang} />)}
-            </div>
-          </div>
-        </section>
-
-        <section className="block about-band" id="about">
-          <div className="wrap about">
+        <div className="w">
+          <div className="hero" onPointerDown={stamp}>
             <div>
-              <h2>{c.about}</h2>
-              <p>{c.p1}</p>
-              <p className="soft">{c.p2}</p>
+              <div className="mo">{c.role}</div>
+              <h1>{c.h1a} <em>{c.h1b}</em></h1>
+              <p className="sub">{c.sub}</p>
+              <div className="cta">
+                <a className="btn p" href="#work">{c.seeWork} ↓</a>
+                <a className="btn" href="#contact">{c.touch}</a>
+              </div>
             </div>
-            <div className="skills">
-              {c.skills.map(([name, items]) => (
-                <div key={name}>
-                  <h3>{name}</h3>
-                  <ul className="stack big">{items.map((s) => <li key={s}>{s}</li>)}</ul>
-                </div>
+            <div className="sealbox">
+              <svg className="seal-big" viewBox="0 0 100 100" role="img" aria-label="Inspection seal"><use href="#seal" /></svg>
+              <span className="mo tag">{c.seal}</span>
+              <span className="mo hint">{c.hint}</span>
+            </div>
+            <Skyline />
+            {stamps.map((s) => (
+              <svg key={s.id} className="stamp" style={{ left: s.x, top: s.y, ['--r' as string]: `${s.r}deg` }} aria-hidden="true"><use href="#mini" /></svg>
+            ))}
+          </div>
+
+          <div className="facts">
+            {c.facts.map(([k, v]) => <div key={k}><span className="mo">{k}</span><b>{v}</b></div>)}
+          </div>
+
+          <section className="sec" id="work">
+            <div className="sh"><h2>{c.workT}</h2><p>{c.workP}</p></div>
+            {featured.map((p) => (
+              <Case key={p.id} p={p} lang={lang} open={open === p.id} onToggle={() => setOpen(open === p.id ? null : p.id)} />
+            ))}
+          </section>
+
+          <section className="sec" id="demos" style={{ paddingTop: 0 }}>
+            <div className="sh"><h2>{c.earlierT}</h2><p>{c.earlierP}</p></div>
+            <div className="eg">{earlier.map((p) => <Earlier key={p.id} p={p} lang={lang} />)}</div>
+          </section>
+
+          <section className="sec" id="method">
+            <div className="sh"><h2>{c.methodT}</h2><p>{c.methodP}</p></div>
+            <div className="pr">
+              {c.method.map(([h, p, ev]) => (
+                <article key={h}><span className="mo">{c.principle}</span><h3>{h}</h3><p>{p}</p><div className="ev">{c.evidence}: {ev}</div></article>
               ))}
             </div>
-          </div>
-        </section>
+          </section>
 
-        <section className="block contact" id="contact">
-          <div className="wrap">
-            <h2>{c.contact}</h2>
-            <p className="lead">{c.contactLead}</p>
-            <div className="cta">
-              <a className="pill sun big" href={`mailto:${EMAIL}`}>{c.email}<i>→</i></a>
-              <a className="pill big outline" href={LINKEDIN} target="_blank" rel="noopener noreferrer">{c.linkedin}<i>↗</i></a>
-              <a className="pill big outline" href="https://github.com/andreacassini" target="_blank" rel="noopener noreferrer">{c.github}<i>↗</i></a>
-              <a className="pill big outline" href={CV} target="_blank" rel="noopener noreferrer">{c.cv}<i>↓</i></a>
+          <section className="sec" id="path">
+            <div className="sh"><h2>{c.pathT}</h2><p>{c.pathP}</p></div>
+            <div className="tl">
+              {c.path.map(([when, what, text]) => (
+                <div className="r" key={what}><span className="mo">{when}</span><div><h3>{what}</h3><p>{text}</p></div></div>
+              ))}
             </div>
-            <p className="addr">{EMAIL}</p>
-          </div>
-        </section>
+          </section>
+
+          <section className="sec ct" id="contact">
+            <span className="mo">{c.open}</span>
+            <h2>{c.contactH}</h2>
+            <div className="row">
+              <a className="btn p" href={`mailto:${EMAIL}`}>{c.email} →</a>
+              <a className="btn" href={LINKEDIN} target="_blank" rel="noopener noreferrer">LinkedIn ↗</a>
+              <a className="btn" href={GITHUB} target="_blank" rel="noopener noreferrer">GitHub ↗</a>
+              <a className="btn" href={CV} target="_blank" rel="noopener noreferrer">{c.downloadCv} ↓</a>
+            </div>
+            <div className="em">{EMAIL}</div>
+          </section>
+        </div>
       </main>
 
       <footer>
-        <div className="wrap foot">
-          <span>© {new Date().getFullYear()} Andrea Cassini · {c.built}</span>
-          <a href="#top">{c.top} ↑</a>
-        </div>
+        <div className="w foot"><span>© {new Date().getFullYear()} Andrea Cassini</span><span className="mo">検査済 · {c.foot}</span></div>
       </footer>
     </>
   );
