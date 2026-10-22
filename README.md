@@ -20,7 +20,6 @@ components/Chrome.tsx    shared navigation, footer and the inspection seal (SVG)
 lib/projects.ts          project list and one-line descriptions (EN/IT)
 lib/details.ts           long write-ups (EN/IT)
 lib/i18n.tsx             language context (stored in localStorage)
-public/                  CV (PDF)
 ```
 
 ## Interactive demos

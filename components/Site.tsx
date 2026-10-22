@@ -3,14 +3,13 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { useLang } from '@/lib/i18n';
-import { CV, Defs, EMAIL, Footer, GITHUB, LINKEDIN, Nav, Seal } from './Chrome';
+import { Defs, EMAIL, Footer, GITHUB, LINKEDIN, Nav, Seal } from './Chrome';
 import { earlier, featured, type Lang, type Project } from '@/lib/projects';
 
 
 const t = {
   en: {
     nav: ['Work', 'Method', 'Path', 'Contact'],
-    cv: 'CV',
     role: 'Junior software developer · Torino',
     h1a: 'Three years finding what breaks.',
     h1b: "Now building what doesn't.",
@@ -64,12 +63,10 @@ const t = {
     open: 'Open to work',
     contactH: "Let's build something that holds up.",
     email: 'Send an email',
-    downloadCv: 'Download CV',
     foot: 'built and tested in Torino',
   },
   it: {
     nav: ['Lavori', 'Metodo', 'Percorso', 'Contatti'],
-    cv: 'CV',
     role: 'Junior software developer · Torino',
     h1a: 'Tre anni a cercare cosa si rompe.',
     h1b: 'Ora costruisco ciò che regge.',
@@ -123,7 +120,6 @@ const t = {
     open: 'Disponibile',
     contactH: 'Costruiamo qualcosa che regga.',
     email: 'Scrivimi una email',
-    downloadCv: 'Scarica il CV',
     foot: 'costruito e collaudato a Torino',
   },
 };
@@ -275,7 +271,6 @@ export default function Site() {
               <a className="btn p" href={`mailto:${EMAIL}`}>{c.email} →</a>
               <a className="btn" href={LINKEDIN} target="_blank" rel="noopener noreferrer">LinkedIn ↗</a>
               <a className="btn" href={GITHUB} target="_blank" rel="noopener noreferrer">GitHub ↗</a>
-              <a className="btn" href={CV} target="_blank" rel="noopener noreferrer">{c.downloadCv} ↓</a>
             </div>
             <div className="em">{EMAIL}</div>
           </section>

@@ -6,11 +6,10 @@ import { useLang } from '@/lib/i18n';
 export const EMAIL = process.env.NEXT_PUBLIC_CONTACT_EMAIL || 'info@andreacassini.com';
 export const LINKEDIN = 'https://www.linkedin.com/in/andrea-cassini-a316161ba';
 export const GITHUB = 'https://github.com/andreacassini';
-export const CV = '/Andrea_Cassini_CV_en_2026.pdf';
 
 const NAV = {
-  en: { items: ['Work', 'Demos', 'Method', 'Path', 'Contact'], cv: 'CV', foot: 'built and tested in Torino' },
-  it: { items: ['Lavori', 'Demo', 'Metodo', 'Percorso', 'Contatti'], cv: 'CV', foot: 'costruito e collaudato a Torino' },
+  en: { items: ['Work', 'Demos', 'Method', 'Path', 'Contact'], foot: 'built and tested in Torino' },
+  it: { items: ['Lavori', 'Demo', 'Metodo', 'Percorso', 'Contatti'], foot: 'costruito e collaudato a Torino' },
 };
 
 export function Seal({ className, big }: { className?: string; big?: boolean }) {
@@ -31,7 +30,6 @@ export function Nav() {
             <button aria-pressed={lang === 'en'} onClick={() => setLang('en')}>EN</button>
             <button aria-pressed={lang === 'it'} onClick={() => setLang('it')}>IT</button>
           </span>
-          <a className="cvb" href={CV} target="_blank" rel="noopener noreferrer">{c.cv} ↓</a>
         </nav>
       </div>
     </header>
