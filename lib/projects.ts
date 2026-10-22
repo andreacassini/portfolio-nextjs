@@ -133,7 +133,7 @@ export const earlier: Project[] = [
   },
   {
     id: 'jarvis-core', title: 'Jarvis Core', year: '2026',
-    one: { en: 'Python core for a personal assistant, split into connectors, core logic and skills.', it: 'Core Python per un assistente personale, diviso in connettori, logica centrale e skill.' },
+    one: { en: 'A modular assistant core: pluggable skills, an intent planner and a safety policy for risky actions.', it: 'Un core modulare per assistente: skill collegabili, un planner di intenti e una policy di sicurezza per le azioni rischiose.' },
     stack: ['Python'], repo: GH + 'jarvis-core',
   },
   {
@@ -153,27 +153,29 @@ export const earlier: Project[] = [
   },
   {
     id: 'dashboard', title: 'Admin Dashboard', year: '2023',
-    one: { en: 'Responsive admin dashboard layout built with Bootstrap.', it: 'Layout responsive di una dashboard amministrativa con Bootstrap.' },
+    one: { en: 'Admin dashboard layout with a classes table and a student form, built with Bootstrap.', it: 'Layout di dashboard amministrativa con tabella delle classi e form studente, con Bootstrap.' },
     stack: ['HTML', 'CSS', 'Bootstrap'], repo: GH + 'html-css-bootstrap-dashboard', demo: PAGES + 'html-css-bootstrap-dashboard/',
   },
   {
     id: 'freelancer', title: 'Freelancer Theme', year: '2023',
-    one: { en: 'One-page freelancer portfolio template built with Bootstrap.', it: 'Template di portfolio one-page per freelance con Bootstrap.' },
+    one: { en: 'The Start Bootstrap Freelancer theme, assembled as a Bootstrap study exercise.', it: 'Il tema Freelancer di Start Bootstrap, assemblato come esercizio di studio su Bootstrap.' },
     stack: ['HTML', 'CSS', 'Bootstrap'], repo: GH + 'html-css-bootstrap-freelancer', demo: PAGES + 'html-css-bootstrap-freelancer/',
   },
   {
     id: 'boolzapp', title: 'Boolzapp', year: '2023',
-    one: { en: 'WhatsApp-style chat with conversations, search and message actions.', it: 'Chat in stile WhatsApp con conversazioni, ricerca e azioni sui messaggi.' },
+    one: { en: 'WhatsApp-style chat in Vue with contact search, conversations and automatic replies.', it: 'Chat in stile WhatsApp in Vue con ricerca dei contatti, conversazioni e risposte automatiche.' },
     stack: ['Vue', 'JavaScript'], repo: GH + 'vue-boolzapp',
   },
   {
     id: 'boolflix', title: 'Boolflix', year: '2023',
-    one: { en: 'Netflix-style catalogue that searches films and series through the TMDB API.', it: 'Catalogo in stile Netflix che cerca film e serie tramite l\'API di TMDB.' },
+    one: { en: 'Netflix-style search of films and series through the TMDB API, built with Vue and Vite.', it: 'Ricerca in stile Netflix di film e serie tramite l\'API di TMDB, con Vue e Vite.' },
     stack: ['Vue', 'Vite', 'REST API'], repo: GH + 'vite-boolflix',
   },
   {
     id: 'laravel-api', title: 'Laravel API', year: '2023',
-    one: { en: 'Laravel project with authentication, many-to-many relations and a JSON API for a Vue front end.', it: 'Progetto Laravel con autenticazione, relazioni many-to-many e un\'API JSON per un front end Vue.' },
+    one: { en: 'A small Laravel CMS for portfolio projects with an admin area and a JSON API.', it: 'Un piccolo CMS Laravel per progetti di portfolio con area admin e API JSON.' },
     stack: ['Laravel', 'PHP', 'MySQL'], repo: GH + 'laravel-api',
   },
 ];
+
+export const allProjects: Project[] = [...featured, ...earlier];

@@ -1,36 +1,46 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# andreacassini.com
 
-## Getting Started
+My portfolio: a bilingual (EN/IT) Next.js site with case studies, live previews and small interactive demos. It is built around one idea: three years of software validation, now turned into building software.
 
-First, run the development server:
+**Live:** https://andreacassini.com
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+## Stack
+
+Next.js 16 (App Router), React 19, TypeScript, Tailwind CSS 4, fonts through `next/font`. No backend, no database: everything is static.
+
+## Structure
+
+```
+app/                     layout, home, and /projects/[id] (static, one page per project)
+components/Site.tsx      home page
+components/ProjectPage   project write-up, live preview and demo
+components/LivePreview   iframe viewer with desktop and phone modes
+components/demos/        interactive demos that run in the browser
+components/Chrome.tsx    shared navigation, footer and the inspection seal (SVG)
+lib/projects.ts          project list and one-line descriptions (EN/IT)
+lib/details.ts           long write-ups (EN/IT)
+lib/i18n.tsx             language context (stored in localStorage)
+public/                  CV (PDF)
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Interactive demos
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- **Jarvis Core**: a TypeScript port of the planner and the safety policy from [jarvis-core](https://github.com/andreacassini/jarvis-core).
+- **TestCraft AI**: a rule-based preview of requirement-to-test-case generation, with CSV export.
+- **Jira Ticket Creator**: row validation and TF-IDF similarity ranking on invented sample defects.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+The projects behind the last two are private, so these demos use sample data and fixed rules, not the real code.
 
-## Learn More
+## Run
 
-To learn more about Next.js, take a look at the following resources:
+```bash
+npm install
+npm run dev     # http://localhost:3000
+npm run build
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Optional: `NEXT_PUBLIC_CONTACT_EMAIL` overrides the public contact address.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Deploy
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Pushing to `main` deploys to Vercel. Every other branch gets a preview URL.
