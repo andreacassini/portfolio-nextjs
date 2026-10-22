@@ -1,6 +1,6 @@
 # andreacassini.com
 
-My portfolio: a bilingual (EN/IT) Next.js site with case studies, live previews and small interactive demos. It is built around one idea: three years of software validation, now turned into building software.
+My portfolio: an English Next.js site with case studies, live previews and small interactive demos. It is built around one idea: three years of software validation, now turned into building software.
 
 **Live:** https://andreacassini.com
 
@@ -19,7 +19,7 @@ components/demos/        interactive demos that run in the browser
 components/Chrome.tsx    shared navigation, footer and the inspection seal (SVG)
 lib/projects.ts          project list and one-line descriptions (EN/IT)
 lib/details.ts           long write-ups (EN/IT)
-lib/i18n.tsx             language context (stored in localStorage)
+lib/i18n.tsx             language context (English only)
 ```
 
 ## Interactive demos

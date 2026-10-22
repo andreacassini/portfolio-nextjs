@@ -64,7 +64,6 @@ type Msg = { who: 'me' | 'ai'; text: string; plan?: Plan; blocked?: boolean };
 
 const T = {
   en: { hint: 'The assistant speaks Italian, like the original. Try:', ph: 'Type a command, e.g. apri chrome', send: 'Send', plan: 'Plan produced', risk: 'risk', none: 'no actions (clarification needed)', blocked: 'blocked by policy', note: 'This is a TypeScript port of the planner and policy from the repository. The Windows connector is a simulation there too: nothing is executed.', reset: 'Reset session' },
-  it: { hint: 'Come nell\'originale, l\'assistente parla italiano. Prova:', ph: 'Scrivi un comando, es. apri chrome', send: 'Invia', plan: 'Piano prodotto', risk: 'rischio', none: 'nessuna azione (serve un chiarimento)', blocked: 'bloccata dalla policy', note: 'È un port in TypeScript di planner e policy del repository. Anche lì il connettore Windows è una simulazione: non viene eseguito nulla.', reset: 'Azzera la sessione' },
 };
 
 export default function JarvisDemo({ lang }: { lang: Lang }) {

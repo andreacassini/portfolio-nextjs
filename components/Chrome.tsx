@@ -9,7 +9,6 @@ export const GITHUB = 'https://github.com/andreacassini';
 
 const NAV = {
   en: { items: ['Work', 'Demos', 'Method', 'Path', 'Contact'], foot: 'built and tested in Torino' },
-  it: { items: ['Lavori', 'Demo', 'Metodo', 'Percorso', 'Contatti'], foot: 'costruito e collaudato a Torino' },
 };
 
 export function Seal({ className, big }: { className?: string; big?: boolean }) {
@@ -17,7 +16,7 @@ export function Seal({ className, big }: { className?: string; big?: boolean }) 
 }
 
 export function Nav() {
-  const { lang, setLang } = useLang();
+  const { lang } = useLang();
   const c = NAV[lang];
   const hrefs = ['/#work', '/#demos', '/#method', '/#path', '/#contact'];
   return (
@@ -26,10 +25,6 @@ export function Nav() {
         <Link className="brand" href="/"><Seal /><span className="bn">Andrea Cassini</span></Link>
         <nav className="links" aria-label="Main">
           {c.items.map((label, i) => <Link key={label} href={hrefs[i]}>{label}</Link>)}
-          <span className="lang" role="group" aria-label="Language">
-            <button aria-pressed={lang === 'en'} onClick={() => setLang('en')}>EN</button>
-            <button aria-pressed={lang === 'it'} onClick={() => setLang('it')}>IT</button>
-          </span>
         </nav>
       </div>
     </header>

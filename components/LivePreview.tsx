@@ -5,7 +5,6 @@ import type { Lang } from '@/lib/projects';
 
 const T = {
   en: { load: 'Load the live preview', note: 'The page below is the real deployed site, running inside this frame.', desktop: 'Desktop', phone: 'Phone', reload: 'Reload', open: 'Open in a new tab' },
-  it: { load: 'Carica l\'anteprima live', note: 'La pagina qui sotto è il sito vero online, in esecuzione dentro questo riquadro.', desktop: 'Desktop', phone: 'Telefono', reload: 'Ricarica', open: 'Apri in una nuova scheda' },
 };
 
 export default function LivePreview({ url, title, lang }: { url: string; title: string; lang: Lang }) {

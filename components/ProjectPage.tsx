@@ -16,11 +16,6 @@ const T = {
     stack: 'Stack', demo: 'Try it', demoNote: 'Runs in your browser on sample data.', live: 'Live preview', code: 'Code on GitHub', privateRepo: 'Private repository',
     next: 'Next project', prev: 'Previous project',
   },
-  it: {
-    back: 'Tutti i progetti', overview: 'Cos\'è', highlights: 'Cosa fa', how: 'Com\'è fatto', status: 'Stato', notYet: 'Cosa manca ancora',
-    stack: 'Stack', demo: 'Provalo', demoNote: 'Gira nel tuo browser su dati di esempio.', live: 'Anteprima live', code: 'Codice su GitHub', privateRepo: 'Repository privato',
-    next: 'Progetto successivo', prev: 'Progetto precedente',
-  },
 };
 
 function InteractiveDemo({ kind, lang }: { kind: 'jarvis' | 'testcraft' | 'tickets'; lang: Lang }) {

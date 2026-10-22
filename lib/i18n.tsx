@@ -1,28 +1,13 @@
 'use client';
 
-import { createContext, useContext, useEffect, useState } from 'react';
+import { createContext, useContext } from 'react';
 import type { Lang } from './projects';
 
-const Ctx = createContext<{ lang: Lang; setLang: (l: Lang) => void }>({ lang: 'en', setLang: () => {} });
+/* The site is English only. The context stays so components keep a single way to read the language. */
+const Ctx = createContext<{ lang: Lang }>({ lang: 'en' });
 
 export function LangProvider({ children }: { children: React.ReactNode }) {
-  const [lang, setLangState] = useState<Lang>('en');
-
-  useEffect(() => {
-    try {
-      const saved = localStorage.getItem('lang');
-      // eslint-disable-next-line react-hooks/set-state-in-effect
-      if (saved === 'it' || saved === 'en') setLangState(saved);
-    } catch {}
-  }, []);
-
-  const setLang = (l: Lang) => {
-    setLangState(l);
-    document.documentElement.lang = l;
-    try { localStorage.setItem('lang', l); } catch {}
-  };
-
-  return <Ctx.Provider value={{ lang, setLang }}>{children}</Ctx.Provider>;
+  return <Ctx.Provider value={{ lang: 'en' }}>{children}</Ctx.Provider>;
 }
 
 export const useLang = () => useContext(Ctx);

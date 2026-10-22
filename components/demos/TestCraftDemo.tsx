@@ -93,7 +93,6 @@ export function generate(text: string): Raw[] {
 
 const T = {
   en: { req: 'Requirement', gen: 'Generate test cases', sample: 'Load the sample', all: 'All', count: (n: number) => `${n} test cases`, pre: 'Preconditions', steps: 'Steps', exp: 'Expected result', csv: 'Download CSV', empty: 'Write or paste a requirement. Sentences with "must", "can", "at least", "between", "unique" or "expires after" give the best results.', note: 'This preview applies fixed rules in your browser. The real TestCraft AI reads PDF, DOCX or text with an LLM and covers much more ground.' },
-  it: { req: 'Requisito', gen: 'Genera i test case', sample: 'Carica l\'esempio', all: 'Tutti', count: (n: number) => `${n} test case`, pre: 'Precondizioni', steps: 'Passi', exp: 'Risultato atteso', csv: 'Scarica CSV', empty: 'Scrivi o incolla un requisito, in inglese. Le frasi con "must", "can", "at least", "between", "unique" o "expires after" danno i risultati migliori.', note: 'Questa anteprima applica regole fisse nel browser. Il vero TestCraft AI legge PDF, DOCX o testo con un LLM e copre molto di più.' },
 };
 
 export default function TestCraftDemo({ lang }: { lang: Lang }) {

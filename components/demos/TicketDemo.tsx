@@ -43,13 +43,6 @@ const T = {
     sim: 'Similar existing defects', dup: 'Possible duplicate', rel: 'Related', none: 'Nothing similar yet.',
     note: 'Validation follows the rules of the real tool (priority and incident type are mandatory, stability fields are required for stability incidents). Ranking here is TF-IDF cosine similarity on invented sample defects. The real tool uses OpenAI embeddings or a local model on your Jira data.',
   },
-  it: {
-    desc: 'Descrizione del difetto', priority: 'Priorità', type: 'Tipo di incident', stab: 'Tipo di stabilità', occ: 'Occorrenza di stabilità', pick: 'Seleziona',
-    ok: 'Questa riga verrebbe elaborata e creerebbe un ticket.', skip: 'Questa riga verrebbe saltata ed elencata nel riepilogo finale:',
-    r1: 'La priorità è obbligatoria: Very High, High, Medium o Low.', r2: 'Il tipo di incident è obbligatorio: Stability o Functionality.', r3: 'Il tipo di stabilità è obbligatorio quando il tipo è Stability.', r4: 'L\'occorrenza di stabilità è obbligatoria quando il tipo è Stability.', r5: 'La descrizione è vuota.',
-    sim: 'Difetti esistenti simili', dup: 'Possibile duplicato', rel: 'Correlato', none: 'Ancora nulla di simile.',
-    note: 'La validazione segue le regole dello strumento vero (priorità e tipo obbligatori, campi di stabilità richiesti per gli incident di stabilità). Qui il ranking è una similarità coseno TF-IDF su difetti di esempio inventati. Lo strumento vero usa gli embedding OpenAI o un modello locale sui dati Jira.',
-  },
 };
 
 export default function TicketDemo({ lang }: { lang: Lang }) {

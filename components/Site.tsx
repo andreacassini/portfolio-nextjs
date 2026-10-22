@@ -65,63 +65,6 @@ const t = {
     email: 'Send an email',
     foot: 'built and tested in Torino',
   },
-  it: {
-    nav: ['Lavori', 'Metodo', 'Percorso', 'Contatti'],
-    role: 'Junior software developer · Torino',
-    h1a: 'Tre anni a cercare cosa si rompe.',
-    h1b: 'Ora costruisco ciò che regge.',
-    sub: 'Laureato in Ingegneria Informatica, con tre anni di validazione software automotive in Reply. Sviluppo web app e strumenti AI e collaudo tutto ciò che consegno.',
-    seeWork: 'Vedi i lavori',
-    touch: 'Contattami',
-    hint: 'clicca ovunque per timbrare',
-    seal: '検査済 · ispezionato',
-    facts: [
-      ['Base', 'Torino · disponibile a trasferirmi all\'estero'],
-      ['Studi', 'Ingegneria Informatica, 2026'],
-      ['Esperienza', '3 anni di validazione software'],
-      ['Cerco', 'Ruolo junior · backend, AI'],
-    ],
-    workT: 'Lavori selezionati',
-    workP: 'Ogni progetto viene ispezionato: cosa risolve, come funziona e cosa resta aperto.',
-    problem: 'Problema',
-    approach: 'Approccio',
-    stackStatus: 'Stack · stato',
-    readCase: 'Leggi la scheda completa',
-    demosT: 'Provalo tu',
-    demosP: 'Piccole versioni interattive di ciò che fanno i progetti privati. Girano nel tuo browser su dati di esempio.',
-    tryIt: 'Apri la demo',
-    demoCards: [
-      ['jarvis-core', 'Jarvis Core', 'Chiedi all\'assistente di aprire un\'app o spegnere il PC e osserva planner, domanda di chiarimento e policy di sicurezza.'],
-      ['testcraft', 'TestCraft AI', 'Incolla un requisito e ottieni test case di confine, negativi e del percorso felice, esportabili in CSV.'],
-      ['bug-ticket-creation', 'Jira Ticket Creator', 'Descrivi un difetto, valida la riga e guarda i difetti esistenti più simili in ordine.'],
-    ],
-    earlierT: 'Anteprime live e lavori precedenti',
-    earlierP: 'Apri un\'anteprima live nella pagina, leggi la scheda o vai al codice.',
-    demo: 'Anteprima live',
-    details: 'Dettagli',
-    code: 'Codice',
-    methodT: 'Come lavoro',
-    methodP: 'Abitudini della validazione, visibili nel codice.',
-    principle: 'Principio',
-    evidence: 'Prova',
-    method: [
-      ['Prima riproduco', 'Trovo la causa radice prima di toccare la correzione. Tre anni di tracce e report di difetti lo hanno reso automatico.', 'Jira ticket creator, 67 test unitari'],
-      ['Lo rendo verificabile', 'Fixture, test e stati che distinguono il lavoro pianificato da quello eseguito, così nessuno deve fidarsi sulla parola.', 'Proofline, Travel Intelligence'],
-      ['Dico cosa non è fatto', 'Un alpha resta etichettato alpha. Una demo con dati simulati lo dice già nella prima pagina.', 'TestCraft AI'],
-    ],
-    pathT: 'Percorso',
-    pathP: 'Dal web alle auto, e di nuovo a costruire.',
-    path: [
-      ['Dic 2023 — oggi', 'Software & Systems Validation · Reply', 'Test end-to-end di infotainment e connettività, analisi dei difetti e gestione dei test case per Italdesign/Audi, Lamborghini, Aston Martin e Stellantis. Analisi delle tracce e release readiness su progetti e-Traction, powertrain e batterie.'],
-      ['Ott 2026', 'Laurea in Ingegneria Informatica · Universitas Mercatorum', 'Tesi: test software manuale e automatizzato e le loro differenze.'],
-      ['2023', 'Programmazione web full-stack · Boolean', 'PHP, Laravel, JavaScript, Vue.js, HTML, CSS e SQL, con progetti individuali e di gruppo.'],
-      ['2020 — 2021', 'Sviluppatore web full-stack · Freelance', 'Sviluppo frontend, backend e database con PHP, Laravel, JavaScript e SQL.'],
-    ],
-    open: 'Disponibile · anche all\'estero',
-    contactH: 'Costruiamo qualcosa che regga.',
-    email: 'Scrivimi una email',
-    foot: 'costruito e collaudato a Torino',
-  },
 };
 
 function Skyline() {
@@ -175,7 +118,7 @@ function Earlier({ p, lang }: { p: Project; lang: Lang }) {
 }
 
 export default function Site() {
-  const { lang, setLang } = useLang();
+  const { lang } = useLang();
   const c = t[lang];
   const [open, setOpen] = useState<string | null>(featured[0].id);
   const [stamps, setStamps] = useState<{ id: number; x: number; y: number; r: number }[]>([]);
