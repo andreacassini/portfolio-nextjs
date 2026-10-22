@@ -43,18 +43,18 @@ a { color: inherit; }
 @media (max-width: 480px) { .brand .bn { display: none; } }
 
 /* hero */
-.hero { position: relative; padding-block: clamp(56px, 9vw, 120px) clamp(60px, 8vw, 110px); display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(0, .8fr); gap: 40px; align-items: center; cursor: crosshair; overflow: hidden; }
+.hero { position: relative; min-height: calc(100svh - 62px); padding-block: 28px 56px; align-content: center; display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(0, .8fr); gap: 40px; align-items: center; cursor: crosshair; overflow: hidden; }
 @media (max-width: 860px) { .hero { grid-template-columns: minmax(0, 1fr); } }
-.hero h1 { font-size: clamp(2.5rem, 6.6vw, 5.4rem); letter-spacing: -.02em; margin: 18px 0 24px; }
+.hero h1 { font-size: clamp(2.3rem, min(6.2vw, 8.6vh), 5.2rem); letter-spacing: -.02em; margin: 12px 0 18px; }
 .hero h1 em { font-style: normal; color: var(--mu); }
-.hero .sub { max-width: 54ch; color: #b9bfcc; font-size: 1.12rem; }
-.cta { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 30px; }
+.hero .sub { max-width: 54ch; color: #b9bfcc; font-size: clamp(1rem, 2.2vh, 1.12rem); }
+.cta { display: flex; gap: 12px; flex-wrap: wrap; margin-top: clamp(18px, 3.4vh, 30px); }
 .btn { display: inline-flex; align-items: center; gap: 10px; padding: 13px 22px; border-radius: 99px; text-decoration: none; font-weight: 700; font-size: .95rem; border: 1px solid var(--tx); background: transparent; color: var(--tx); cursor: pointer; transition: transform .2s, background .2s, color .2s, border-color .2s; }
 .btn.p { background: var(--tx); color: var(--bg); }
 .btn:hover { transform: translateY(-2px); }
 .btn.p:hover { background: var(--amb); border-color: var(--amb); }
 .btn:not(.p):hover { background: var(--tx); color: var(--bg); }
-.sealbox { position: relative; display: grid; place-items: center; min-height: 300px; }
+.sealbox { position: relative; display: grid; place-items: center; min-height: 380px; }
 .seal-big { width: min(300px, 70vw); height: auto; transform: rotate(-8deg); animation: press 1.1s cubic-bezier(.2, .8, .2, 1) .35s both; }
 @keyframes press { 0% { opacity: 0; transform: rotate(-14deg) scale(1.9); } 55% { opacity: .95; transform: rotate(-8deg) scale(.96); } 75% { transform: rotate(-8deg) scale(1.02); } 100% { opacity: .92; transform: rotate(-8deg) scale(1); } }
 .sealbox .tag { position: absolute; bottom: 0; right: 0; transform: rotate(-8deg); }
